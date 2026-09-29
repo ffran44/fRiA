@@ -5,7 +5,7 @@ import * as m from "motion/react-m";
 import { useEffect, useRef, useState } from "react";
 import SnowBurst from "./SnowBurst";
 
-export type CopitoPose = "idle" | "wave" | "point" | "celebrate";
+export type CopitoPose = "idle" | "wave" | "point" | "celebrate" | "walk";
 
 type CopitoProps = {
   /** Tamaño en px. Si no se pasa, lo define `className` (por ejemplo `size-40 lg:size-72`). */
@@ -39,13 +39,17 @@ const RIGHT_ARM: Record<CopitoPose, number | number[]> = {
   wave: [0, -50, -10, -50, -10, -50, 0],
   point: 28,
   celebrate: -65,
+  walk: [14, -12],
 };
-const LEFT_ARM: Record<CopitoPose, number> = {
+const LEFT_ARM: Record<CopitoPose, number | number[]> = {
   idle: 0,
   wave: 0,
   point: 0,
   celebrate: 75,
+  walk: [-14, 12],
 };
+// Al caminar, brazos y patitas van y vienen a contratiempo.
+const STEP = { duration: 0.34, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" } as const;
 
 const CELEBRATE_MS = 1400;
 const EYE_SPRING = { stiffness: 300, damping: 20 };
@@ -185,10 +189,16 @@ export default function Copito({
             ? { y: 0 }
             : active === "celebrate"
               ? { y: [0, -14, 0, -8, 0] }
-              : { y: [0, -2, 0] }
+              : active === "walk"
+                ? { y: [0, -2.5] }
+                : { y: [0, -2, 0] }
         }
         transition={
-          active === "celebrate" ? { duration: 0.9, ease: "easeOut" } : { duration: 3, ...LOOP }
+          active === "celebrate"
+            ? { duration: 0.9, ease: "easeOut" }
+            : active === "walk"
+              ? { ...STEP, duration: STEP.duration / 2 }
+              : { duration: 3, ...LOOP }
         }
       >
         {/* Copo completo mientras cae */}
@@ -236,7 +246,7 @@ export default function Copito({
             <m.g
               style={{ originX: 1, originY: 0 }}
               animate={{ rotate: animateLimbs ? LEFT_ARM[active] : 0 }}
-              transition={ARM_SPRING}
+              transition={active === "walk" ? STEP : ARM_SPRING}
             >
               <path d="M0 0 L-20 7" stroke={color} strokeWidth={7} strokeLinecap="round" />
               <circle cx={-24} cy={8} r={6} fill={color} />
@@ -248,7 +258,13 @@ export default function Copito({
             <m.g
               style={{ originX: 0, originY: 1 }}
               animate={{ rotate: animateLimbs || holding ? rightArm : 0 }}
-              transition={active === "wave" ? { duration: 2, ease: "easeInOut" } : ARM_SPRING}
+              transition={
+                active === "wave"
+                  ? { duration: 2, ease: "easeInOut" }
+                  : active === "walk"
+                    ? STEP
+                    : ARM_SPRING
+              }
             >
               <path d="M0 0 L18 -10" stroke={color} strokeWidth={7} strokeLinecap="round" />
               {holding === "phone" && <Phone />}
@@ -256,13 +272,23 @@ export default function Copito({
             </m.g>
           </g>
 
-          {/* Patitas */}
-          <g stroke={color} strokeWidth={7} strokeLinecap="round" fill="none">
-            <path d="M-8 20 L-11 39" />
-            <path d="M8 20 L11 39" />
-          </g>
-          <ellipse cx={-15} cy={43} rx={9} ry={5.5} fill={color} />
-          <ellipse cx={15} cy={43} rx={9} ry={5.5} fill={color} />
+          {/* Patitas: rotan desde la cadera; al caminar, una adelante y otra atrás */}
+          <m.g
+            style={{ originX: 1, originY: 0 }}
+            animate={{ rotate: animateLimbs && active === "walk" ? [-16, 16] : 0 }}
+            transition={active === "walk" ? STEP : ARM_SPRING}
+          >
+            <path d="M-8 20 L-11 39" stroke={color} strokeWidth={7} strokeLinecap="round" />
+            <ellipse cx={-15} cy={43} rx={9} ry={5.5} fill={color} />
+          </m.g>
+          <m.g
+            style={{ originX: 0, originY: 0 }}
+            animate={{ rotate: animateLimbs && active === "walk" ? [16, -16] : 0 }}
+            transition={active === "walk" ? STEP : ARM_SPRING}
+          >
+            <path d="M8 20 L11 39" stroke={color} strokeWidth={7} strokeLinecap="round" />
+            <ellipse cx={15} cy={43} rx={9} ry={5.5} fill={color} />
+          </m.g>
         </m.g>
 
         {/* Cuerpo y cara: la cara aparece al aterrizar */}

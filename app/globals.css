@@ -150,7 +150,21 @@
   animation: copito-shadow 2.6s cubic-bezier(0.6, 0, 0.9, 1) both;
 }
 
+/* Huellas de Copito en el sendero de Cómo trabajamos: aparecen detrás de él. */
+.huella {
+  opacity: 0;
+  transition: opacity 0.35s ease-out;
+}
+
+.huella[data-on] {
+  opacity: 0.45;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .huella {
+    transition: none;
+  }
+
   .copito-fall,
   .copito-sway,
   .copito-shadow {

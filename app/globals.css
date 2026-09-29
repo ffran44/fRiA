@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/*
+ * Tokens de fRiA (CLAUDE.md §4). Los componentes usan estos nombres, nunca hex sueltos.
+ *
+ * Contraste medido (WCAG 2.x):
+ *   noche sobre hielo 13.46 · noche sobre blanco 14.82 · blanco sobre noche 14.82
+ *   blanco sobre celeste-profundo 4.51 · celeste-profundo sobre blanco 4.51
+ *   celeste-profundo sobre hielo 4.09  → NO alcanza 4.5: sobre hielo los links van en
+ *                                        noche con subrayado celeste-profundo.
+ *   celeste sobre hielo 2.13 / blanco 2.35 → nunca texto (el brief ya lo prohíbe).
+ *   celeste sobre noche 6.31 → sí se puede usar como texto en secciones oscuras.
+ */
+@theme {
+  --color-hielo: #eaf6fb;
+  --color-celeste: #4fb3e8;
+  --color-celeste-profundo: #1f7db5;
+  --color-noche: #0e2a3d;
+  --color-blanco: #ffffff;
+
+  --font-display: var(--font-climate-crisis), "Arial Black", sans-serif;
+  --font-body: var(--font-playfair), Georgia, serif;
+
+  --breakpoint-xs: 22.5rem; /* 360 px, el mínimo del brief */
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* El header fijo no tapa lo que recibe foco ni el destino de un ancla. */
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  label {
+    touch-action: manipulation;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background: var(--color-hielo);
+    color: var(--color-noche);
+    font-family: var(--font-body);
+    font-size: 1.125rem; /* 18 px mínimo en párrafos */
+    line-height: 1.65;
+  }
+
+  /* Climate Crisis solo en su versión sólida (YEAR 1979, el valor por defecto). */
+  h1,
+  h2,
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-variation-settings: "YEAR" 1979;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  p {
+    max-width: 65ch; /* menos de 75 caracteres por línea */
+    text-wrap: pretty;
+  }
+
+  a {
+    text-decoration-color: var(--color-celeste-profundo);
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 2px;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-celeste-profundo);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .device-screen {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(14 42 61 / 0.35) transparent;
+  }
+
+  .bg-noche :focus-visible {
+    outline-color: var(--color-celeste);
+  }
+}
+
+/*
+ * Títulos de sección en Climate Crisis. La palabra más larga ("trabajamos") mide 8.21em:
+ * el ancho útil dividido 8.6 hace que ninguna palabra se salga desde 360 px.
+ */
+@utility section-title {
+  font-size: min(3.75rem, calc((100vw - 2rem) / 8.6));
+}
+
+/*
+ * Intro de Copito en el hero (el único momento automático del sitio).
+ * Es CSS para que arranque con el primer pintado, sin esperar el JS: cae desde arriba de la
+ * pantalla girando y balanceándose; la sombra crece a medida que se acerca al piso.
+ * Copito.tsx escucha el fin de `copito-fall` para desplegar brazos y patitas.
+ */
+@keyframes copito-fall {
+  from {
+    translate: 0 calc(-100% - 11rem);
+    rotate: -110deg;
+  }
+  to {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+}
+
+@keyframes copito-sway {
+  25% {
+    translate: 14px 0;
+  }
+  50% {
+    translate: -12px 0;
+  }
+  75% {
+    translate: 8px 0;
+  }
+}
+
+@keyframes copito-shadow {
+  from {
+    opacity: 0;
+    scale: 0.2 1;
+  }
+}
+
+.copito-fall {
+  animation: copito-fall 2.6s cubic-bezier(0.25, 0.8, 0.35, 1) both;
+}
+
+.copito-sway {
+  animation: copito-sway 2.6s ease-in-out both;
+}
+
+.copito-shadow {
+  opacity: 0.14;
+  animation: copito-shadow 2.6s cubic-bezier(0.6, 0, 0.9, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copito-fall,
+  .copito-sway,
+  .copito-shadow {
+    animation: none;
+  }
+}

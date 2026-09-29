@@ -34,7 +34,8 @@ export const TRABAJOS: Trabajo[] = [
     cliente: "Action Sport",
     rubro: "Gimnasio de musculación y funcional",
     url: "https://actionsport-mu.vercel.app/",
-    necesitaban: null, // TODO: cómo se manejaban antes y qué problema tenían.
+    necesitaban:
+      "Action Sport no tenía página web y necesitaba que la gente pudiera ver cómo es el gimnasio.",
     hicimos: [
       { label: "Presentación de los profesores", seccion: "profesores" },
       { label: "Servicios", seccion: "servicios" },

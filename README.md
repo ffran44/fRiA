@@ -17,10 +17,8 @@ Se completan en un solo lugar y se actualizan en todo el sitio:
 | Dato | Dónde |
 |---|---|
 | Número de WhatsApp | `lib/site.ts` → `WHATSAPP_NUMBER` (con código de país, sin `+`: `549...`) |
-| Usuario de Instagram | `lib/site.ts` → `INSTAGRAM_USER` |
-| Action Sport: qué necesitaban, resultado, testimonio | `lib/trabajos.ts` (resultado y testimonio solo se muestran si hay datos reales) |
+| Action Sport: resultado y testimonio | `lib/trabajos.ts` (solo se muestran si hay datos reales) |
 | Experiencia de cada socio | `components/nosotros/Nosotros.tsx` |
-| Plazo de respuesta del formulario | `components/contacto/ContactForm.tsx` |
 
 ## Formulario de contacto
 

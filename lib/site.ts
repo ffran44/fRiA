@@ -7,8 +7,7 @@ export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 export const EMAIL = "fria.soluciones.web@gmail.com";
 
-/** TODO: usuario de Instagram. */
-export const INSTAGRAM_USER = "[USUARIO DE INSTAGRAM]";
+export const INSTAGRAM_USER = "fria.web";
 
 export const NAV_LINKS = [
   { href: "#trabajos", label: "Trabajos" },

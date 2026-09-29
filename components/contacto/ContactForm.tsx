@@ -97,7 +97,6 @@ export default function ContactForm({ onSent }: ContactFormProps) {
   if (status === "sent") {
     return (
       <div ref={sentRef} tabIndex={-1} role="status" className="rounded-3xl bg-blanco/10 p-6 sm:p-8">
-        {/* TODO: confirmar el plazo de respuesta con los socios. */}
         <p className="text-xl font-semibold">Mensaje enviado.</p>
         <p className="mt-2">Te respondemos dentro de las próximas 24 horas.</p>
       </div>

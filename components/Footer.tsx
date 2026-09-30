@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { EMAIL, INSTAGRAM_USER, NAV_LINKS } from "@/lib/site";
 
 const INSTAGRAM_PENDIENTE = INSTAGRAM_USER.startsWith("[");
@@ -8,7 +9,7 @@ export default function Footer() {
     <footer className="bg-noche text-blanco">
       <div className="mx-auto max-w-6xl border-t border-blanco/20 px-4 py-12 sm:px-8">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
-          <a href="#inicio" className="w-fit rounded-md" aria-label="fRiA, volver al inicio">
+          <Link href="/#inicio" className="w-fit rounded-md" aria-label="fRiA, volver al inicio">
             <Image
               src="/brand/fria-logo-horizontal-oscuro.svg"
               alt=""
@@ -16,15 +17,15 @@ export default function Footer() {
               height={52}
               className="h-11 w-auto"
             />
-          </a>
+          </Link>
 
           <nav aria-label="Secciones">
             <ul className="grid grid-cols-2 gap-x-8 gap-y-1 sm:flex sm:gap-6">
               {NAV_LINKS.map((l) => (
                 <li key={l.href}>
-                  <a href={l.href} className="inline-block py-2 text-blanco no-underline hover:underline decoration-celeste">
+                  <Link href={l.href} className="inline-block py-2 text-blanco no-underline hover:underline decoration-celeste">
                     {l.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

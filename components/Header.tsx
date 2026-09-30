@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
 import { useEffect, useRef, useState } from "react";
@@ -27,7 +28,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-noche/10 bg-hielo/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-8 md:h-20">
-        <a href="#inicio" className="-ml-1 rounded-md p-1" aria-label="fRiA, ir al inicio">
+        <Link href="/#inicio" className="-ml-1 rounded-md p-1" aria-label="fRiA, ir al inicio">
           <Image
             src="/brand/fria-logo-horizontal-claro.svg"
             alt=""
@@ -36,24 +37,24 @@ export default function Header() {
             priority
             className="h-10 w-auto md:h-12"
           />
-        </a>
+        </Link>
 
         <nav aria-label="Principal" className="hidden md:block">
           <ul className="flex items-center gap-6 lg:gap-8">
             {NAV_LINKS.map((l) => (
               <li key={l.href}>
-                <a href={l.href} className={LINK}>
+                <Link href={l.href} className={LINK}>
                   {l.label}
-                </a>
+                </Link>
               </li>
             ))}
             <li>
-              <a
-                href="#contacto"
+              <Link
+                href="/#contacto"
                 className="inline-flex min-h-11 items-center rounded-full bg-celeste-profundo px-5 font-semibold text-blanco no-underline transition-colors hover:bg-noche"
               >
                 Contacto
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
@@ -102,23 +103,23 @@ export default function Header() {
             <ul className="mx-auto flex max-w-6xl flex-col px-4 pb-6 pt-2">
               {NAV_LINKS.map((l) => (
                 <li key={l.href}>
-                  <a
+                  <Link
                     href={l.href}
                     onClick={() => setOpen(false)}
                     className="block rounded-md py-3 text-xl text-noche no-underline"
                   >
                     {l.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
               <li className="mt-3">
-                <a
-                  href="#contacto"
+                <Link
+                  href="/#contacto"
                   onClick={() => setOpen(false)}
                   className="flex min-h-12 items-center justify-center rounded-full bg-celeste-profundo text-lg font-semibold text-blanco no-underline"
                 >
                   Contacto
-                </a>
+                </Link>
               </li>
             </ul>
           </m.nav>

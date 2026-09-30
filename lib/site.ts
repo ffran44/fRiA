@@ -10,8 +10,8 @@ export const EMAIL = "fria.soluciones.web@gmail.com";
 export const INSTAGRAM_USER = "fria.web";
 
 export const NAV_LINKS = [
-  { href: "#trabajos", label: "Trabajos" },
-  { href: "#servicios", label: "Servicios" },
-  { href: "#como-trabajamos", label: "Cómo trabajamos" },
-  { href: "#nosotros", label: "Nosotros" },
+  { href: "/#trabajos", label: "Trabajos" },
+  { href: "/#servicios", label: "Servicios" },
+  { href: "/#como-trabajamos", label: "Cómo trabajamos" },
+  { href: "/#nosotros", label: "Nosotros" },
 ] as const;

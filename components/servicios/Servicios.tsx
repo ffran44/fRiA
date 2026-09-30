@@ -13,6 +13,8 @@ export default function Servicios() {
   const listRef = useRef<HTMLUListElement>(null);
   const copitoRef = useRef<HTMLDivElement>(null);
   const [copitoY, setCopitoY] = useState(0);
+  // Mientras va de un servicio a otro, camina; al llegar, señala.
+  const [caminando, setCaminando] = useState(false);
 
   // Copito baja hasta quedar a la altura del servicio abierto (solo se mueve con transform).
   useLayoutEffect(() => {
@@ -44,9 +46,15 @@ export default function Servicios() {
             className="absolute left-0 top-0 w-full"
             initial={false}
             animate={{ y: copitoY, opacity: abierto ? 1 : 0.35 }}
-            transition={{ type: "spring", stiffness: 170, damping: 22 }}
+            transition={{ type: "spring", stiffness: 90, damping: 18 }}
+            onAnimationStart={() => setCaminando(true)}
+            onAnimationComplete={() => setCaminando(false)}
           >
-            <Copito pose={abierto ? "point" : "idle"} interactive={false} className="aspect-square w-full" />
+            <Copito
+              pose={caminando ? "walk" : abierto ? "point" : "idle"}
+              interactive={false}
+              className="aspect-square w-full"
+            />
           </m.div>
         </div>
 

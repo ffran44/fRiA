@@ -5,7 +5,7 @@ import * as m from "motion/react-m";
 import { useEffect, useRef, useState } from "react";
 import SnowBurst from "./SnowBurst";
 
-export type CopitoPose = "idle" | "wave" | "point" | "celebrate" | "walk";
+export type CopitoPose = "idle" | "wave" | "point" | "celebrate" | "walk" | "dance" | "hop";
 
 type CopitoProps = {
   /** Tamaño en px. Si no se pasa, lo define `className` (por ejemplo `size-40 lg:size-72`). */
@@ -40,6 +40,8 @@ const RIGHT_ARM: Record<CopitoPose, number | number[]> = {
   point: 28,
   celebrate: -65,
   walk: [14, -12],
+  dance: [-65, 5],
+  hop: -25,
 };
 const LEFT_ARM: Record<CopitoPose, number | number[]> = {
   idle: 0,
@@ -47,11 +49,17 @@ const LEFT_ARM: Record<CopitoPose, number | number[]> = {
   point: 0,
   celebrate: 75,
   walk: [-14, 12],
+  dance: [5, 75],
+  hop: 25,
 };
+
+// Al tocarlo, reacciona distinto cada vez: salta, gira en el aire, baila.
+type Reaccion = "salto" | "giro" | "baile";
+const REACCIONES: Reaccion[] = ["salto", "giro", "baile"];
+const REACCION_MS: Record<Reaccion, number> = { salto: 1400, giro: 1300, baile: 1600 };
 // Al caminar, brazos y patitas van y vienen a contratiempo.
 const STEP = { duration: 0.34, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" } as const;
 
-const CELEBRATE_MS = 1400;
 const EYE_SPRING = { stiffness: 300, damping: 20 };
 const ARM_SPRING = { type: "spring", stiffness: 200, damping: 12 } as const;
 const LOOP = { repeat: Infinity, ease: "easeInOut" } as const;
@@ -78,7 +86,9 @@ export default function Copito({
   const onLandedRef = useRef(onLanded);
   const [landed, setLanded] = useState(!intro);
   const [blink, setBlink] = useState(false);
-  const [celebrating, setCelebrating] = useState(false);
+  const [reaccion, setReaccion] = useState<Reaccion | null>(null);
+  const [toques, setToques] = useState(0);
+  const [curioso, setCurioso] = useState(false);
   const [burst, setBurst] = useState(0);
 
   // Un festejo pedido desde afuera (por ejemplo, formulario enviado) también tira nieve.
@@ -88,7 +98,10 @@ export default function Copito({
     if (pose === "celebrate") setBurst((b) => b + 1);
   }
 
-  const active: CopitoPose = celebrating ? "celebrate" : pose;
+  const active: CopitoPose =
+    reaccion === "baile" ? "dance" : reaccion ? "celebrate" : pose;
+  // Curiosidad al pasar el cursor, solo si no está haciendo otra cosa.
+  const mirando = curioso && !reaccion && (pose === "idle" || pose === "wave" || pose === "point");
   // Con el teléfono, el brazo en reposo se abre un poco para que no tape la coronita.
   const rightArm = holding && active === "idle" ? 14 : RIGHT_ARM[active];
   const animateLimbs = !reduce;
@@ -159,16 +172,17 @@ export default function Copito({
     };
   }, [reduce, landed, inView]);
 
-  // El festejo por clic dura un rato y vuelve a la pose que tenía.
+  // La reacción al toque dura un rato y vuelve a la pose que tenía.
   useEffect(() => {
-    if (!celebrating) return;
-    const t = setTimeout(() => setCelebrating(false), CELEBRATE_MS);
+    if (!reaccion) return;
+    const t = setTimeout(() => setReaccion(null), REACCION_MS[reaccion]);
     return () => clearTimeout(t);
-  }, [celebrating, burst]);
+  }, [reaccion, burst]);
 
   const celebrate = () => {
     if (!landed) return;
-    setCelebrating(true);
+    setReaccion(REACCIONES[toques % REACCIONES.length]);
+    setToques((n) => n + 1);
     setBurst((b) => b + 1);
   };
 
@@ -182,23 +196,68 @@ export default function Copito({
       className="block"
       {...(interactive ? { "aria-hidden": true } : { role: "img", "aria-label": label })}
     >
-      {/* Respiración en reposo, saltito al festejar */}
+      {/* Aterrizaje del hero: se aplasta contra el piso y rebota, como algo blando */}
+      <m.g
+        style={{ originX: 0.5, originY: 1 }}
+        initial={false}
+        animate={
+          landed && intro && animateLimbs
+            ? { scaleY: [0.78, 1.08, 0.97, 1], scaleX: [1.16, 0.95, 1.02, 1] }
+            : { scaleY: 1, scaleX: 1 }
+        }
+        transition={{ duration: 0.55, ease: "easeOut" }}
+      >
+      {/* Giro en el aire y bailecito (reacciones al toque) */}
+      <m.g
+        style={{ originX: 0.5, originY: 0.5 }}
+        animate={
+          !animateLimbs
+            ? { rotate: 0 }
+            : reaccion === "giro"
+              ? { rotate: [0, 360] }
+              : active === "dance"
+                ? { rotate: [0, -12, 12, -12, 12, -8, 0] }
+                : { rotate: 0 }
+        }
+        transition={
+          reaccion === "giro"
+            ? { duration: 0.8, ease: [0.3, 0, 0.2, 1], delay: 0.1 }
+            : active === "dance"
+              ? { duration: 1.4, ease: "easeInOut" }
+              : { duration: 0 }
+        }
+      >
+      {/* Respiración en reposo, saltos al festejar, saltito de curiosidad */}
       <m.g
         animate={
           !animateLimbs || !landed || (!inView && active !== "celebrate")
             ? { y: 0 }
-            : active === "celebrate"
-              ? { y: [0, -14, 0, -8, 0] }
-              : active === "walk"
-                ? { y: [0, -2.5] }
-                : { y: [0, -2, 0] }
+            : reaccion === "giro"
+              ? { y: [0, -24, -24, 0, -5, 0] }
+              : active === "celebrate"
+                ? { y: [0, -14, 0, -8, 0] }
+                : active === "dance"
+                  ? { y: [0, -4] }
+                  : active === "hop"
+                    ? { y: [0, -9, 0] }
+                    : mirando
+                      ? { y: [0, -5, 0] }
+                      : active === "walk"
+                        ? { y: [0, -2.5] }
+                        : { y: [0, -2, 0] }
         }
         transition={
-          active === "celebrate"
-            ? { duration: 0.9, ease: "easeOut" }
-            : active === "walk"
-              ? { ...STEP, duration: STEP.duration / 2 }
-              : { duration: 3, ...LOOP }
+          reaccion === "giro"
+            ? { duration: 1.1, times: [0, 0.25, 0.7, 0.85, 0.93, 1], ease: "easeOut" }
+            : active === "celebrate"
+              ? { duration: 0.9, ease: "easeOut" }
+              : active === "dance"
+                ? { duration: 0.2, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }
+                : active === "hop" || mirando
+                  ? { duration: 0.35, ease: "easeOut" }
+                  : active === "walk"
+                    ? { ...STEP, duration: STEP.duration / 2 }
+                    : { duration: 3, ...LOOP }
         }
       >
         {/* Copo completo mientras cae */}
@@ -246,7 +305,7 @@ export default function Copito({
             <m.g
               style={{ originX: 1, originY: 0 }}
               animate={{ rotate: animateLimbs ? LEFT_ARM[active] : 0 }}
-              transition={active === "walk" ? STEP : ARM_SPRING}
+              transition={active === "walk" || active === "dance" ? { ...STEP, duration: active === "dance" ? 0.2 : STEP.duration } : ARM_SPRING}
             >
               <path d="M0 0 L-20 7" stroke={color} strokeWidth={7} strokeLinecap="round" />
               <circle cx={-24} cy={8} r={6} fill={color} />
@@ -261,8 +320,8 @@ export default function Copito({
               transition={
                 active === "wave"
                   ? { duration: 2, ease: "easeInOut" }
-                  : active === "walk"
-                    ? STEP
+                  : active === "walk" || active === "dance"
+                    ? { ...STEP, duration: active === "dance" ? 0.2 : STEP.duration }
                     : ARM_SPRING
               }
             >
@@ -299,23 +358,36 @@ export default function Copito({
           transition={{ duration: 0.2, delay: landed && intro ? 0.15 : 0 }}
         >
           <m.g style={{ x: lookX, y: lookY }}>
+            {/* Ojos grandes de curiosidad; el parpadeo va por dentro */}
             <m.g
-              animate={{ scaleY: blink ? 0.1 : 1 }}
-              transition={{ duration: 0.07 }}
+              animate={{ scale: mirando && animateLimbs ? 1.3 : 1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 15 }}
             >
-              <circle cx={-7} cy={-3} r={3.2} fill={faceColor} />
-              <circle cx={7} cy={-3} r={3.2} fill={faceColor} />
+              <m.g
+                animate={{ scaleY: blink ? 0.1 : 1 }}
+                transition={{ duration: 0.07 }}
+              >
+                <circle cx={-7} cy={-3} r={3.2} fill={faceColor} />
+                <circle cx={7} cy={-3} r={3.2} fill={faceColor} />
+              </m.g>
             </m.g>
           </m.g>
           <m.path
             initial={false}
-            animate={{ d: active === "celebrate" ? "M-7 4 Q0 14 7 4" : "M-6 5 Q0 11 6 5" }}
+            animate={{
+              d:
+                active === "celebrate" || active === "dance" || active === "hop"
+                  ? "M-7 4 Q0 14 7 4"
+                  : "M-6 5 Q0 11 6 5",
+            }}
             stroke={faceColor}
             strokeWidth={2.6}
             strokeLinecap="round"
             fill="none"
           />
         </m.g>
+      </m.g>
+      </m.g>
       </m.g>
     </svg>
   );
@@ -325,6 +397,8 @@ export default function Copito({
       ref={rootRef}
       className={`relative ${className ?? ""}`}
       style={size ? { width: size, height: size } : undefined}
+      onPointerEnter={(e) => interactive && e.pointerType === "mouse" && setCurioso(true)}
+      onPointerLeave={() => setCurioso(false)}
     >
       {intro && (
         <div
@@ -348,7 +422,9 @@ export default function Copito({
           )}
         </div>
       </div>
-      {active === "celebrate" && !reduce && <SnowBurst key={burst} seed={burst} color={color} />}
+      {(active === "celebrate" || active === "dance") && !reduce && (
+        <SnowBurst key={burst} seed={burst} color={color} />
+      )}
     </div>
   );
 }

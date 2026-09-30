@@ -14,6 +14,14 @@ export default function Contacto() {
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
+  // Mientras arman el mensaje, Copito da un saltito con cada avance.
+  const saltito = () => {
+    if (pose === "celebrate") return;
+    setPose("hop");
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setPose("idle"), 450);
+  };
+
   // Mensaje armado y enviado: Copito festeja un rato y vuelve a quedarse con el teléfono.
   const celebrate = () => {
     setPose("celebrate");
@@ -77,7 +85,7 @@ export default function Contacto() {
         </div>
 
         <div className="min-w-0 lg:pt-10">
-          <ContactoGuiado onEnviar={celebrate} />
+          <ContactoGuiado onEnviar={celebrate} onAvance={saltito} />
         </div>
       </div>
     </section>

@@ -21,13 +21,15 @@ const HAY_WHATSAPP = !WHATSAPP_NUMBER.startsWith("[");
 type ContactoGuiadoProps = {
   /** Para que Copito festeje cuando la persona manda el mensaje. */
   onEnviar?: () => void;
+  /** Para que Copito acompañe: la persona eligió algo o avanzó de paso. */
+  onAvance?: () => void;
 };
 
 /**
  * Contacto por mail en tres pasos: qué necesita, un poco de detalle y su nombre, y el
  * mensaje armado. "Enviar por mail" abre la app de mail de la persona con todo escrito.
  */
-export default function ContactoGuiado({ onEnviar }: ContactoGuiadoProps) {
+export default function ContactoGuiado({ onEnviar, onAvance }: ContactoGuiadoProps) {
   const id = useId();
   const [paso, setPaso] = useState(0);
   const [direccion, setDireccion] = useState(1);
@@ -51,6 +53,7 @@ export default function ContactoGuiado({ onEnviar }: ContactoGuiadoProps) {
     setError(null);
     setDireccion(nuevo > paso ? 1 : -1);
     setPaso(nuevo);
+    if (nuevo > paso) onAvance?.();
   };
 
   const siguiente = () => {
@@ -68,6 +71,7 @@ export default function ContactoGuiado({ onEnviar }: ContactoGuiadoProps) {
 
   const alternar = (n: string) => {
     setError(null);
+    if (!elegidas.includes(n)) onAvance?.();
     setElegidas((prev) => (prev.includes(n) ? prev.filter((x) => x !== n) : [...prev, n]));
   };
 

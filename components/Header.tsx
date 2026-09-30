@@ -52,7 +52,7 @@ export default function Header() {
                 href="#contacto"
                 className="inline-flex min-h-11 items-center rounded-full bg-celeste-profundo px-5 font-semibold text-blanco no-underline transition-colors hover:bg-noche"
               >
-                Escribinos
+                Contacto
               </a>
             </li>
           </ul>
@@ -117,7 +117,7 @@ export default function Header() {
                   onClick={() => setOpen(false)}
                   className="flex min-h-12 items-center justify-center rounded-full bg-celeste-profundo text-lg font-semibold text-blanco no-underline"
                 >
-                  Escribinos
+                  Contacto
                 </a>
               </li>
             </ul>

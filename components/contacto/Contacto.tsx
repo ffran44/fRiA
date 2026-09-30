@@ -48,7 +48,7 @@ export default function Contacto() {
             className="mt-10 inline-flex min-h-12 w-full items-center justify-center gap-2.5 rounded-full bg-blanco px-6 py-3 text-lg font-semibold text-noche no-underline transition-colors hover:bg-hielo sm:w-auto"
           >
             <WhatsAppIcon className="size-5 text-celeste-profundo" />
-            Escribinos por WhatsApp
+            WhatsApp
           </a>
 
           <ul className="mt-10 space-y-3">

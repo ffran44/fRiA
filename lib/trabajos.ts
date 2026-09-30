@@ -6,6 +6,8 @@ export type Captura = {
   /** Tamaño real del archivo en px. */
   width: number;
   height: number;
+  /** Versiones más chicas de la misma captura, para pantallas que no necesitan la grande. */
+  chicas: { src: string; width: number }[];
   /** Dónde empieza cada sección del sitio, como fracción del alto de la captura (0 a 1). */
   secciones: Record<string, number>;
 };
@@ -50,6 +52,7 @@ export const TRABAJOS: Trabajo[] = [
         src: "/trabajos/action-sport/celular.webp",
         width: 585,
         height: 10700,
+        chicas: [{ src: "/trabajos/action-sport/celular-480.webp", width: 480 }],
         secciones: fracciones(7133, {
           inicio: 0,
           profesores: 2894,
@@ -62,6 +65,7 @@ export const TRABAJOS: Trabajo[] = [
         src: "/trabajos/action-sport/escritorio.webp",
         width: 1440,
         height: 5940,
+        chicas: [{ src: "/trabajos/action-sport/escritorio-800.webp", width: 800 }],
         secciones: fracciones(5940, {
           inicio: 0,
           profesores: 2242,

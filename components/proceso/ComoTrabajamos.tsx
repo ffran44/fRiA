@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useMotionValueEvent,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useVelocity,
-} from "motion/react";
+import { useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Copito, { type CopitoPose } from "@/components/Copito";
 import { PASOS } from "@/lib/contenido";
@@ -23,9 +17,9 @@ type Huella = { x: number; y: number; a: number; len: number };
 type Muestras = { xs: number[]; ys: number[]; lens: number[] };
 
 /**
- * Cómo trabajamos: un sendero de nieve que zigzaguea entre los pasos. Copito lo recorre a
- * medida que scrolleás, camina de lado a lado, deja huellas y señala el paso en el que
- * quedó. Al llegar al último, festeja.
+ * Cómo trabajamos: un sendero de nieve que zigzaguea entre los pasos. El scroll marca hasta
+ * dónde llegar y Copito camina a su ritmo hasta ahí, de lado a lado, dejando huellas. Quieto
+ * en un paso, lo señala; al llegar al último, festeja.
  */
 export default function ComoTrabajamos() {
   const reduce = useReducedMotion() ?? false;
@@ -50,13 +44,16 @@ export default function ComoTrabajamos() {
   const [mirada, setMirada] = useState<1 | -1>(1);
   const [festejoHecho, setFestejoHecho] = useState(false);
 
-  // Scroll → posición a lo largo del sendero, con un poco de inercia para que sea natural.
+  // El scroll marca hasta dónde tiene que llegar Copito; él camina a su ritmo hasta ahí.
   const { scrollYProgress } = useScroll({
     target: wrapRef,
     offset: [`start ${LECTURA * 100}%`, `end ${LECTURA * 100}%`],
   });
-  const suave = useSpring(scrollYProgress, { stiffness: 70, damping: 18, restDelta: 0.0002 });
-  const velocidad = useVelocity(suave);
+  const recorrido = useRef(0); // px del sendero que ya caminó
+  const destino = useRef(0);
+  const velActual = useRef(0);
+  const raf = useRef<number | null>(null);
+  const tPrevio = useRef(0);
 
   // 1. Medir los pasos y trazar el sendero.
   useLayoutEffect(() => {
@@ -129,40 +126,48 @@ export default function ComoTrabajamos() {
     setHuellas(nuevas);
   }, [geo]);
 
-  // 3. Ubicar a Copito, prender huellas y decidir el paso activo para un avance dado.
-  const ubicar = (progreso: number) => {
+  // 3. Hasta dónde del sendero corresponde llegar para un avance del scroll.
+  const destinoPara = (progreso: number) => {
+    const mu = muestras.current;
+    const mks = marcas.current;
+    if (!mu || !geo || mks.length === 0) return 0;
+    const y = Math.min(Math.max(progreso * geo.h, mks[0].y), mks[mks.length - 1].y);
+    if (reduce) {
+      // Con reduced motion no camina: queda en el paso activo.
+      let i = 0;
+      mks.forEach((mk, k) => {
+        if (mk.y <= y + 1) i = k;
+      });
+      return mks[i].len;
+    }
+    return puntoEnY(mu, y).len;
+  };
+
+  // 4. Dibujar a Copito en un punto del sendero, prender huellas y marcar el paso.
+  const pintar = (len: number) => {
     const mu = muestras.current;
     const mks = marcas.current;
     const copito = copitoRef.current;
-    if (!mu || !geo || !copito || mks.length === 0) return;
-    const ultima = mks.length - 1;
-
-    let y = Math.min(Math.max(progreso * geo.h, mks[0].y), mks[ultima].y);
-    let idxActivo = 0;
-    mks.forEach((mk, i) => {
-      if (mk.y <= y + 1) idxActivo = i;
-    });
-    // Con reduced motion no camina: queda quieto en el paso activo.
-    if (reduce) y = mks[idxActivo].y;
-
-    const { x, len } = puntoEnY(mu, y);
+    if (!mu || !copito || mks.length === 0) return;
+    const { x, y } = puntoEnLargo(mu, len);
     const cw = copito.offsetWidth;
     copito.style.transform = `translate3d(${x - cw / 2}px, ${y - cw * 0.88}px, 0)`;
     copito.style.opacity = "1";
 
-    if (!reduce && ultimoX.current !== null) {
+    if (ultimoX.current !== null) {
       const dx = x - ultimoX.current;
-      if (Math.abs(dx) > 0.4) setMirada(dx > 0 ? 1 : -1);
+      if (Math.abs(dx) > 0.3) setMirada(dx > 0 ? 1 : -1);
     }
     ultimoX.current = x;
 
-    // Huellas: todas las que quedaron detrás de Copito (con reduced motion, todas).
+    // Huellas: las que quedaron detrás de Copito (con reduced motion, todas).
     const g = huellasRef.current;
     if (g) {
       const cuantas = reduce ? huellas.length : huellas.filter((h) => h.len <= len - 8).length;
       if (cuantas !== visibles.current) {
         const hijos = g.children;
-        const [desde, hasta] = [Math.min(cuantas, visibles.current), Math.max(cuantas, visibles.current)];
+        const desde = Math.min(cuantas, visibles.current);
+        const hasta = Math.max(cuantas, visibles.current);
         for (let i = desde; i < hasta && i < hijos.length; i++) {
           hijos[i].toggleAttribute("data-on", i < cuantas);
         }
@@ -170,21 +175,71 @@ export default function ComoTrabajamos() {
       }
     }
 
-    setActivo(idxActivo);
-    setEnMarca(Math.abs(len - mks[idxActivo].len) < 14);
-    if (idxActivo < ultima) setFestejoHecho(false);
+    let idx = 0;
+    mks.forEach((mk, i) => {
+      if (mk.len <= len + 2) idx = i;
+    });
+    setActivo(idx);
+    setEnMarca(Math.abs(len - mks[idx].len) < 14);
+    if (idx < mks.length - 1) setFestejoHecho(false);
   };
 
-  useMotionValueEvent(suave, "change", (v) => !reduce && ubicar(v));
-  useMotionValueEvent(scrollYProgress, "change", (v) => reduce && ubicar(v));
-  useMotionValueEvent(velocidad, "change", (v) => setCaminando(!reduce && Math.abs(v) > 0.012));
+  // 5. Caminar hacia el destino: arranca de a poco, va a paso tranquilo (proporcional a su
+  // tamaño) y frena al llegar. Si quedó muy atrás, apura para no perderse de la pantalla.
+  const caminar = (t: number) => {
+    const dt = Math.min(0.05, (t - tPrevio.current) / 1000);
+    tPrevio.current = t;
+    const falta = destino.current - recorrido.current;
+    const dist = Math.abs(falta);
+    if (dist < 0.5) {
+      recorrido.current = destino.current;
+      velActual.current = 0;
+      pintar(recorrido.current);
+      setCaminando(false);
+      raf.current = null;
+      return;
+    }
+    const cw = copitoRef.current?.offsetWidth ?? 56;
+    // Paso normal ≈ 2 veces su tamaño por segundo; apurado, como mucho 4.5.
+    const crucero = Math.min(cw * 4.5, cw * 2.1 + Math.max(0, dist - cw * 5) * 0.6);
+    const frenando = dist * 3 + cw * 0.3;
+    const objetivoVel = Math.min(crucero, frenando);
+    velActual.current = Math.min(objetivoVel, velActual.current + cw * 7 * dt);
+    recorrido.current += Math.sign(falta) * Math.min(dist, velActual.current * dt);
+    pintar(recorrido.current);
+    raf.current = requestAnimationFrame(caminar);
+  };
 
-  // Posición inicial, apenas están las huellas calculadas. Si el sendero se recalculó (por
-  // ejemplo, al rotar el celular), primero se apagan todas y se prenden de nuevo.
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    destino.current = destinoPara(v);
+    if (reduce) {
+      recorrido.current = destino.current;
+      pintar(recorrido.current);
+      return;
+    }
+    if (raf.current === null && Math.abs(destino.current - recorrido.current) > 1) {
+      setCaminando(true);
+      tPrevio.current = performance.now();
+      raf.current = requestAnimationFrame(caminar);
+    }
+  });
+
+  useEffect(
+    () => () => {
+      if (raf.current !== null) cancelAnimationFrame(raf.current);
+    },
+    [],
+  );
+
+  // Posición inicial, apenas están las huellas calculadas: aparece donde corresponde, sin
+  // caminar. Si el sendero se recalculó (por ejemplo, al rotar el celular), primero se
+  // apagan todas las huellas y se prenden de nuevo.
   useLayoutEffect(() => {
     huellasRef.current?.querySelectorAll("[data-on]").forEach((e) => e.removeAttribute("data-on"));
     visibles.current = 0;
-    ubicar(reduce ? scrollYProgress.get() : suave.get());
+    destino.current = destinoPara(scrollYProgress.get());
+    recorrido.current = destino.current;
+    pintar(recorrido.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [huellas]);
 
@@ -338,4 +393,15 @@ function puntoEnY(mu: Muestras, y: number) {
 
 function largoEnY(mu: Muestras, y: number) {
   return puntoEnY(mu, y).len;
+}
+
+// Punto del sendero a cierta distancia recorrida (las muestras están cada 3 px).
+function puntoEnLargo(mu: Muestras, len: number) {
+  const n = mu.lens.length;
+  const i = Math.max(0, Math.min(n - 2, Math.floor(len / 3)));
+  const t = Math.max(0, Math.min(1, (len - mu.lens[i]) / 3));
+  return {
+    x: mu.xs[i] + (mu.xs[i + 1] - mu.xs[i]) * t,
+    y: mu.ys[i] + (mu.ys[i + 1] - mu.ys[i]) * t,
+  };
 }

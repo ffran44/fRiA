@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { Captura } from "@/lib/trabajos";
 
 type DeviceScreenProps = {
   captura: Captura;
   alt: string;
-  /** Ancho con el que se muestra, para que next/image elija el tamaño justo. */
+  /** Ancho con el que se muestra, para que el navegador elija la versión justa. */
   sizes: string;
   ref?: React.Ref<HTMLDivElement>;
   /** Fracción (0 a 1) de la captura que está a la vista, cada vez que cambia el scroll. */
@@ -85,15 +84,20 @@ export default function DeviceScreen({
         }}
         className="device-screen size-full cursor-grab overflow-y-auto overscroll-y-auto data-dragging:cursor-grabbing data-dragging:select-none"
       >
-        <Image
+        {/* <img> propio con srcSet: son capturas muy altas y el optimizador de Next las
+            achica de más, así que las versiones ya están generadas en WebP. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={captura.src}
+          srcSet={[...captura.chicas, captura]
+            .map((c) => `${c.src} ${c.width}w`)
+            .join(", ")}
+          sizes={sizes}
           alt={alt}
           width={captura.width}
           height={captura.height}
-          sizes={sizes}
-          // Capturas muy altas: el optimizador de Next las achica de más. Ya están en WebP
-          // al ancho justo (celular 585 px, escritorio 1440 px), así que van tal cual.
-          unoptimized
+          loading="lazy"
+          decoding="async"
           draggable={false}
           className="block h-auto w-full"
         />

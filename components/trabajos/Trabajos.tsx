@@ -1,6 +1,4 @@
 import ButtonLink from "@/components/ui/ButtonLink";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import { WHATSAPP_URL } from "@/lib/site";
 import { TRABAJOS } from "@/lib/trabajos";
 import CasoDestacado from "./CasoDestacado";
 
@@ -24,14 +22,10 @@ export default function Trabajos() {
         <p className="text-xl sm:text-2xl">
           Tu proyecto puede ser el próximo. Escribinos y lo charlamos.
         </p>
-        <ButtonLink
-          href={WHATSAPP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="shrink-0"
-        >
-          <WhatsAppIcon className="size-5" />
-          Escribinos por WhatsApp
+        {/* Lleva a Contacto (WhatsApp, mail, Instagram y formulario) para no repetir el
+            mismo botón de WhatsApp del hero y del cierre. */}
+        <ButtonLink href="#contacto" className="shrink-0">
+          Contanos tu idea
         </ButtonLink>
       </div>
     </section>

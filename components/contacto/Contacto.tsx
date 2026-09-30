@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Copito, { type CopitoPose } from "@/components/Copito";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import { EMAIL, INSTAGRAM_USER, WHATSAPP_URL } from "@/lib/site";
-import ContactForm, { CONTACT_FORM_ENABLED } from "./ContactForm";
+import ContactoGuiado from "./ContactoGuiado";
 
 const INSTAGRAM_PENDIENTE = INSTAGRAM_USER.startsWith("[");
 
@@ -14,7 +14,7 @@ export default function Contacto() {
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
-  // Mensaje enviado: Copito festeja un rato y vuelve a quedarse con el teléfono.
+  // Mensaje armado y enviado: Copito festeja un rato y vuelve a quedarse con el teléfono.
   const celebrate = () => {
     setPose("celebrate");
     clearTimeout(timer.current);
@@ -76,11 +76,9 @@ export default function Contacto() {
           </ul>
         </div>
 
-        {CONTACT_FORM_ENABLED && (
-          <div className="min-w-0 lg:pt-10">
-            <ContactForm onSent={celebrate} />
-          </div>
-        )}
+        <div className="min-w-0 lg:pt-10">
+          <ContactoGuiado onEnviar={celebrate} />
+        </div>
       </div>
     </section>
   );

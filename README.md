@@ -20,11 +20,12 @@ Se completan en un solo lugar y se actualizan en todo el sitio:
 | Action Sport: resultado y testimonio | `lib/trabajos.ts` (solo se muestran si hay datos reales) |
 | Experiencia de cada socio | `components/nosotros/Nosotros.tsx` |
 
-## Formulario de contacto
+## Contacto por mail
 
-Usa Web3Forms (plan gratuito). Crear la clave en https://web3forms.com con el mail de fRiA y
-cargarla como `NEXT_PUBLIC_WEB3FORMS_KEY` en Vercel (Settings → Environment Variables) y en
-`.env.local`. Sin la clave, el formulario no aparece en producción.
+En Contacto hay un mensaje guiado en 3 pasos (qué necesita, nombre y detalle, revisión).
+"Enviar por mail" abre la app de mail de la persona con el mensaje escrito para
+fria.soluciones.web@gmail.com. No usa servicios externos ni claves. Cuando se cargue el
+número de WhatsApp, aparece también "Mandarlo por WhatsApp" con el mismo texto.
 
 ## Publicar
 

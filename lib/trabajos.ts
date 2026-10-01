@@ -47,7 +47,7 @@ export const TRABAJOS: Trabajo[] = [
     ],
     // Comentario real que transmitieron los profes (01/10/2026).
     resultado:
-      "Los profes de Action Sport y Athlos nos dijeron que la página quedó hermosa y que están muy contentos con la atención y el nivel de detalle.",
+      "Los profes de Action Sport y Athlos nos dijeron que la página quedó hermosa. También están muy contentos con la atención y con el nivel de detalle.",
     testimonio: null, // TODO: frase real del cliente.
     capturas: {
       celular: {

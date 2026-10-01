@@ -1,6 +1,4 @@
 import ButtonLink from "@/components/ui/ButtonLink";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import { WHATSAPP_URL } from "@/lib/site";
 import HeroCopito from "./HeroCopito";
 
 export default function Hero() {
@@ -29,10 +27,7 @@ export default function Hero() {
       </p>
 
       <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <ButtonLink href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-          <WhatsAppIcon className="size-5" />
-          Escribinos por WhatsApp
-        </ButtonLink>
+        <ButtonLink href="#contacto">Escribinos</ButtonLink>
         <ButtonLink href="#trabajos" variant="secondary">
           Ver trabajos
         </ButtonLink>

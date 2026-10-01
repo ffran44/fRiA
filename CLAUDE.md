@@ -30,7 +30,8 @@ respetalo en cada decisión. Si algo no está definido acá, preguntá antes de 
 ## 2. Objetivo del sitio
 
 Que un dueño de negocio que llega desde Instagram, WhatsApp o una recomendación termine
-escribiendo por WhatsApp. El sitio tiene que **mostrar resultados**: trabajos reales, qué
+escribiéndonos por mail o por Instagram. (Decisión del 01/10/2026: el sitio no usa
+WhatsApp; donde abajo dice WhatsApp, va mail o Instagram.) El sitio tiene que **mostrar resultados**: trabajos reales, qué
 problema resolvieron y cómo quedó. Cada sección empuja hacia el contacto.
 
 Además, el sitio en sí es la prueba de lo que saben hacer: tiene que ser rápido, pulido,
@@ -102,7 +103,7 @@ Textos:
 - Título: "Tu negocio, online y funcionando."
 - Bajada: "Hacemos páginas web, tiendas online, apps y automatizaciones a medida. Desde
   Río Tercero, para donde estés."
-- Botón principal: "Escribinos por WhatsApp" → `https://wa.me/[NÚMERO]`
+- Botón principal: "Escribinos" → ancla a Contacto.
 - Botón secundario: "Ver trabajos" → ancla a Trabajos.
 
 Interacción: si tocan o hacen clic en Copito, festeja (salta con los brazos arriba) y
@@ -167,9 +168,9 @@ Copito camina sobre ella de paso en paso:
 
 Sección en fondo `noche`. Copito aparece sosteniendo un teléfono.
 - Título: "¿Charlamos tu proyecto?"
-- Botón: "Escribinos por WhatsApp" → `https://wa.me/[NÚMERO]`
+- Botón: "Escribinos por Instagram" → mensaje privado a @fria.web.
 - Mail: fria.soluciones.web@gmail.com
-- Instagram: [USUARIO DE INSTAGRAM]
+- Instagram: fria.web
 - Formulario opcional: nombre, qué necesitás, WhatsApp o mail. Mensaje de éxito:
   "Mensaje enviado. Te respondemos dentro de las próximas 24 horas." (confirmar el plazo
   con los socios). Mensaje de error claro sobre qué pasó y qué hacer.

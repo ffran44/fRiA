@@ -16,16 +16,18 @@ Se completan en un solo lugar y se actualizan en todo el sitio:
 
 | Dato | Dónde |
 |---|---|
-| Número de WhatsApp | `lib/site.ts` → `WHATSAPP_NUMBER` (con código de país, sin `+`: `549...`) |
-| Action Sport: resultado y testimonio | `lib/trabajos.ts` (solo se muestran si hay datos reales) |
+| Action Sport: testimonio (frase textual del cliente) | `lib/trabajos.ts` (solo se muestra si hay una frase real) |
 | Experiencia de cada socio | `components/nosotros/Nosotros.tsx` |
 
-## Contacto por mail
+## Contacto
 
-En Contacto hay un mensaje guiado en 3 pasos (qué necesita, nombre y detalle, revisión).
-"Enviar por mail" abre la app de mail de la persona con el mensaje escrito para
-fria.soluciones.web@gmail.com. No usa servicios externos ni claves. Cuando se cargue el
-número de WhatsApp, aparece también "Mandarlo por WhatsApp" con el mismo texto.
+El sitio no usa WhatsApp: se contacta por mail o por Instagram (@fria.web).
+
+- En Contacto hay un mensaje guiado en 3 pasos (qué necesita, nombre y detalle, revisión).
+  "Enviar por mail" abre la app de mail de la persona con el mensaje escrito para
+  fria.soluciones.web@gmail.com. "Copiar y abrir Instagram" copia el mismo mensaje y abre un
+  chat con @fria.web para pegarlo. No usa servicios externos ni claves.
+- El botón "Escribinos por Instagram" abre directo un mensaje privado (`ig.me`).
 
 ## Publicar
 

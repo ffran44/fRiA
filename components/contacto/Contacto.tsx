@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Copito, { type CopitoPose } from "@/components/Copito";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import { EMAIL, INSTAGRAM_USER, WHATSAPP_URL } from "@/lib/site";
+import InstagramIcon from "@/components/icons/InstagramIcon";
+import { EMAIL, INSTAGRAM_DM_URL, INSTAGRAM_URL, INSTAGRAM_USER } from "@/lib/site";
 import ContactoGuiado from "./ContactoGuiado";
 
 const INSTAGRAM_PENDIENTE = INSTAGRAM_USER.startsWith("[");
@@ -50,13 +50,13 @@ export default function Contacto() {
           </h2>
 
           <a
-            href={WHATSAPP_URL}
+            href={INSTAGRAM_DM_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-10 inline-flex min-h-12 w-full items-center justify-center gap-2.5 rounded-full bg-blanco px-6 py-3 text-lg font-semibold text-noche no-underline transition-colors hover:bg-hielo sm:w-auto"
           >
-            <WhatsAppIcon className="size-5 text-celeste-profundo" />
-            WhatsApp
+            <InstagramIcon className="size-5 text-celeste-profundo" />
+            Escribinos por Instagram
           </a>
 
           <ul className="mt-10 space-y-3">
@@ -72,7 +72,7 @@ export default function Contacto() {
                 <span className="text-xl">{INSTAGRAM_USER}</span>
               ) : (
                 <a
-                  href={`https://instagram.com/${INSTAGRAM_USER}`}
+                  href={INSTAGRAM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xl text-blanco decoration-celeste"

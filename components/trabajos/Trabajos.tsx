@@ -22,8 +22,7 @@ export default function Trabajos() {
         <p className="text-xl sm:text-2xl">
           Tu proyecto puede ser el próximo. Escribinos y lo charlamos.
         </p>
-        {/* Lleva a Contacto (WhatsApp, mail, Instagram y formulario) para no repetir el
-            mismo botón de WhatsApp del hero y del cierre. */}
+        {/* Lleva a Contacto: mensaje guiado por mail o Instagram. */}
         <ButtonLink href="#contacto" className="shrink-0">
           Contanos tu idea
         </ButtonLink>

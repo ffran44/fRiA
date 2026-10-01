@@ -3,7 +3,7 @@
 import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
 import { useEffect, useId, useRef, useState } from "react";
-import { EMAIL, WHATSAPP_NUMBER } from "@/lib/site";
+import { EMAIL, INSTAGRAM_DM_URL, INSTAGRAM_USER } from "@/lib/site";
 
 const NECESIDADES = [
   "Página web",
@@ -15,8 +15,6 @@ const NECESIDADES = [
 
 const TITULOS = ["¿Qué necesitás?", "Contanos un poco", "Revisá tu mensaje"] as const;
 
-// Con el número cargado en lib/site.ts aparece también la opción de mandarlo por WhatsApp.
-const HAY_WHATSAPP = !WHATSAPP_NUMBER.startsWith("[");
 
 type ContactoGuiadoProps = {
   /** Para que Copito festeje cuando la persona manda el mensaje. */
@@ -37,7 +35,7 @@ export default function ContactoGuiado({ onEnviar, onAvance }: ContactoGuiadoPro
   const [nombre, setNombre] = useState("");
   const [detalle, setDetalle] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [enviado, setEnviado] = useState(false);
+  const [enviado, setEnviado] = useState<"mail" | "instagram" | null>(null);
   const [copiado, setCopiado] = useState(false);
   const tituloRef = useRef<HTMLHeadingElement>(null);
   const pasoPrevio = useRef(paso);
@@ -83,11 +81,21 @@ export default function ContactoGuiado({ onEnviar, onAvance }: ContactoGuiadoPro
     ...(detalle.trim() ? ["", detalle.trim()] : []),
   ].join("\n");
   const mailto = `mailto:${EMAIL}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-  const whatsapp = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(cuerpo)}`;
 
-  const enviar = () => {
-    setEnviado(true);
+  const enviar = (canal: "mail" | "instagram") => {
+    setEnviado(canal);
     onEnviar?.();
+  };
+
+  // Instagram no deja precargar el mensaje: se copia y la persona lo pega en el chat.
+  // Si el navegador no deja copiar, se le pide que copie el texto de la vista previa.
+  const porInstagram = () => {
+    setCopiado(false);
+    enviar("instagram");
+    navigator.clipboard
+      ?.writeText(cuerpo)
+      .then(() => setCopiado(true))
+      .catch(() => setCopiado(false));
   };
 
   const copiar = async () => {
@@ -106,7 +114,7 @@ export default function ContactoGuiado({ onEnviar, onAvance }: ContactoGuiadoPro
 
   return (
     <section aria-labelledby={`${id}-titulo`} className="rounded-3xl bg-blanco/[0.06] p-5 sm:p-8">
-      <p className="text-base text-blanco/85">¿Preferís mail? Armá tu mensaje en 3 pasos.</p>
+      <p className="text-base text-blanco/85">Armá tu mensaje en 3 pasos y mandalo por mail o por Instagram.</p>
 
       {/* Progreso: qué paso es y cuánto falta */}
       <div className="mt-4 flex items-center gap-3">
@@ -214,12 +222,12 @@ export default function ContactoGuiado({ onEnviar, onAvance }: ContactoGuiadoPro
             {paso === 2 && (
               <div className="mt-5">
                 <div className="rounded-2xl bg-blanco p-4 text-base text-noche sm:p-5">
-                  <p className="break-all">
-                    <span className="mr-2 text-sm font-semibold uppercase tracking-wider">Para</span>
+                  <p className="[overflow-wrap:anywhere]">
+                    <span className="block text-sm font-semibold uppercase tracking-wider">Para</span>
                     {EMAIL}
                   </p>
                   <p className="mt-1">
-                    <span className="mr-2 text-sm font-semibold uppercase tracking-wider">Asunto</span>
+                    <span className="block text-sm font-semibold uppercase tracking-wider">Asunto</span>
                     {asunto}
                   </p>
                   <p className="mt-3 whitespace-pre-line">{cuerpo}</p>
@@ -228,28 +236,35 @@ export default function ContactoGuiado({ onEnviar, onAvance }: ContactoGuiadoPro
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   <a
                     href={mailto}
-                    onClick={enviar}
+                    onClick={() => enviar("mail")}
                     className="inline-flex min-h-12 items-center justify-center rounded-full bg-blanco px-6 py-3 text-lg font-semibold text-noche no-underline transition-colors hover:bg-hielo"
                   >
                     Enviar por mail
                   </a>
-                  {HAY_WHATSAPP && (
-                    <a
-                      href={whatsapp}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={enviar}
-                      className="inline-flex min-h-12 items-center justify-center rounded-full px-6 py-3 text-lg font-semibold text-blanco no-underline shadow-[inset_0_0_0_2px_var(--color-blanco)] transition-colors hover:bg-blanco hover:text-noche"
-                    >
-                      Mandarlo por WhatsApp
-                    </a>
-                  )}
+                  <a
+                    href={INSTAGRAM_DM_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={porInstagram}
+                    className="inline-flex min-h-12 items-center justify-center rounded-full px-6 py-3 text-lg font-semibold text-blanco no-underline shadow-[inset_0_0_0_2px_var(--color-blanco)] transition-colors hover:bg-blanco hover:text-noche"
+                  >
+                    Copiar y abrir Instagram
+                  </a>
                 </div>
                 <p className="mt-3 text-base text-blanco/85">
-                  Se abre tu app de mail con el mensaje listo: solo tenés que tocar enviar.
+                  Por mail se abre tu app con el mensaje listo. Por Instagram lo copiamos para que
+                  lo pegues en el chat con @{INSTAGRAM_USER}.
                 </p>
 
-                {enviado && (
+                {enviado === "instagram" && (
+                  <p role="status" className="mt-5 rounded-xl border-2 border-dashed border-celeste p-4">
+                    {copiado
+                      ? "Copiamos tu mensaje: pegalo en el chat de Instagram y mandalo."
+                      : "No pudimos copiarlo solo: copiá el texto del mensaje de arriba y pegalo en el chat de Instagram."}
+                  </p>
+                )}
+
+                {enviado === "mail" && (
                   <div role="status" className="mt-5 rounded-xl border-2 border-dashed border-celeste p-4">
                     <p className="font-semibold">¿No se abrió tu mail?</p>
                     <p className="mt-1 text-base">

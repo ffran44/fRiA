@@ -45,7 +45,9 @@ export const TRABAJOS: Trabajo[] = [
       { label: "Ubicación con mapa", seccion: "ubicacion" },
       { label: "Contacto directo por WhatsApp con cada profe", seccion: "profesores" },
     ],
-    resultado: null, // TODO: solo con datos reales (consultas recibidas, comentarios).
+    // Comentario real que transmitieron los profes (01/10/2026).
+    resultado:
+      "Los profes de Action Sport y Athlos nos dijeron que la página quedó hermosa y que están muy contentos con la atención y el nivel de detalle.",
     testimonio: null, // TODO: frase real del cliente.
     capturas: {
       celular: {

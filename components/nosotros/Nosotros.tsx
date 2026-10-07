@@ -13,11 +13,10 @@ export default function Nosotros() {
       </p>
 
       <p className="mt-10 text-xl sm:text-2xl">
-        Somos Francisco Rissone e Ismael Abrile, de Río Tercero. Francisco se ocupa del diseño y
-        de estar en contacto con cada cliente, desde la primera charla hasta que el sitio sale
-        publicado. Ismael estudia Ingeniería en Sistemas en la UTN. Armamos fRiA para que
-        cualquier negocio pueda tener soluciones web bien hechas y alguien cerca a quien
-        preguntarle.
+        Somos Francisco Rissone e Ismael Abrile, de Río Tercero. Francisco es técnico en
+        informática y estudia Telecomunicaciones en la UTN. Ismael estudia Ingeniería en
+        Sistemas, también en la UTN. Armamos fRiA para que cualquier negocio pueda tener
+        soluciones web bien hechas y alguien cerca a quien preguntarle.
       </p>
     </section>
   );

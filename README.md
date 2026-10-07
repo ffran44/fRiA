@@ -17,7 +17,6 @@ Se completan en un solo lugar y se actualizan en todo el sitio:
 | Dato | Dónde |
 |---|---|
 | Action Sport: testimonio (frase textual del cliente) | `lib/trabajos.ts` (solo se muestra si hay una frase real) |
-| Experiencia de cada socio | `components/nosotros/Nosotros.tsx` |
 
 ## Contacto
 

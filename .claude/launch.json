@@ -4,8 +4,8 @@
     {
       "name": "fria-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--", "-p", "4321"],
-      "port": 4321
+      "runtimeArgs": ["run", "dev", "--", "-p", "4330"],
+      "port": 4330
     }
   ]
 }

@@ -21,7 +21,8 @@ export const SERVICIOS = [
   },
   {
     id: "automatizaciones",
-    titulo: "Automatizaciones",
+    // Guion opcional: en celular la palabra entera no entra con el título grande.
+    titulo: "Automatiza­ciones",
     texto:
       "Dejá de hacer a mano lo que se repite: mensajes, planillas, avisos y reportes que se hacen solos.",
   },

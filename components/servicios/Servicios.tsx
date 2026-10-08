@@ -40,8 +40,11 @@ export default function Servicios() {
         Servicios
       </h2>
 
-      <div className="mt-12 grid grid-cols-[3.5rem_minmax(0,1fr)] gap-x-3 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-x-6 lg:mt-16 lg:grid-cols-[9rem_minmax(0,1fr)]">
-        <div aria-hidden className="relative">
+      {/* Índice tipográfico: cada servicio con la voz grande del hero. En pantallas grandes
+          Copito camina por su columna hasta el servicio abierto; en celular aparece dentro
+          del servicio abierto, así los títulos usan todo el ancho. */}
+      <div className="mt-12 lg:mt-16 lg:grid lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-x-10">
+        <div aria-hidden className="relative hidden lg:block">
           <m.div
             ref={copitoRef}
             className="absolute left-0 top-0 w-full"
@@ -74,13 +77,19 @@ export default function Servicios() {
                     aria-expanded={open}
                     aria-controls={panelId}
                     onClick={() => setAbierto(open ? null : s.id)}
-                    className="flex min-h-20 w-full items-center justify-between gap-4 py-5 text-left text-2xl font-bold transition-colors duration-200 hover:text-celeste-profundo active:text-celeste-profundo sm:text-3xl"
+                    className={`group flex w-full items-start justify-between gap-3 py-6 text-left transition-colors duration-200 hover:text-celeste-profundo active:text-celeste-profundo lg:py-8 ${
+                      open ? "text-celeste-profundo" : "text-noche"
+                    }`}
                   >
-                    {s.titulo}
+                    {/* "Automatiza-" (8.6em) es lo más ancho que no se corta: el ancho
+                        útil dividido 8.9 hace que entre siempre, desde 360 px. */}
+                    <span className="font-display text-[calc((100vw-4.75rem)/8.9)] leading-[1.05] sm:text-[min(3.5rem,calc((100vw-6.75rem)/8.9))] lg:text-[min(3.5rem,calc((min(100vw,72rem)-18.25rem)/8.9))]">
+                      {s.titulo}
+                    </span>
                     <svg
                       viewBox="0 0 24 24"
                       aria-hidden
-                      className={`size-6 shrink-0 text-celeste-profundo transition-transform duration-300 ${open ? "rotate-45" : ""}`}
+                      className={`mt-[0.2em] size-8 shrink-0 text-celeste-profundo transition-transform duration-300 lg:size-10 ${open ? "rotate-45" : ""}`}
                       fill="none"
                       stroke="currentColor"
                       strokeWidth={2.5}
@@ -92,14 +101,28 @@ export default function Servicios() {
                 </h3>
                 <div id={panelId} role="region" aria-labelledby={btnId} hidden={!open}>
                   {open && (
-                    <m.p
-                      className="pb-7 pr-10 text-lg sm:text-xl"
-                      initial={{ opacity: 0, y: -8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.25, ease: "easeOut" }}
-                    >
-                      {s.texto}
-                    </m.p>
+                    <div className="flex items-start gap-4 pb-8 lg:pb-10">
+                      <m.p
+                        className="max-w-[38ch] flex-1 text-xl sm:text-2xl"
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                      >
+                        {s.texto}
+                      </m.p>
+                      {/* En celular, Copito llega al servicio abierto y señala la descripción. */}
+                      <m.div
+                        aria-hidden
+                        className="w-16 shrink-0 lg:hidden"
+                        initial={{ opacity: 0, x: 24 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                      >
+                        <div style={{ transform: "scaleX(-1)" }}>
+                          <Copito pose="point" interactive={false} className="aspect-square w-full" />
+                        </div>
+                      </m.div>
+                    </div>
                   )}
                 </div>
               </li>

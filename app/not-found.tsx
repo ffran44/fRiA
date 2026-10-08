@@ -58,16 +58,15 @@ export default function NotFound() {
           </div>
 
           <div className="md:order-1">
-            <p className="text-base font-semibold uppercase tracking-[0.14em]">Error 404</p>
             <h1
               id="no-encontrada-title"
-              className="mt-3 text-[min(5rem,calc((100vw-2rem)/5.4))]"
+              className="text-[min(5rem,calc((100vw-2rem)/5.4))]"
             >
               Acá no hay nada.
             </h1>
             <p className="mt-6 text-lg sm:text-xl">
-              La página que buscás no existe o cambió de lugar. Puede que el link esté mal
-              escrito.
+              Error 404: la página que buscás no existe o cambió de lugar. Puede que el link
+              esté mal escrito.
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
               <ButtonLink href="/">Volver al inicio</ButtonLink>

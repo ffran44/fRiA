@@ -3,10 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Copito, { type CopitoPose } from "@/components/Copito";
 import InstagramIcon from "@/components/icons/InstagramIcon";
-import { EMAIL, INSTAGRAM_DM_URL, INSTAGRAM_URL, INSTAGRAM_USER } from "@/lib/site";
+import { EMAIL, INSTAGRAM_DM_URL } from "@/lib/site";
 import ContactoGuiado from "./ContactoGuiado";
 
-const INSTAGRAM_PENDIENTE = INSTAGRAM_USER.startsWith("[");
 
 export default function Contacto() {
   const [pose, setPose] = useState<CopitoPose>("idle");
@@ -59,29 +58,12 @@ export default function Contacto() {
             Escribinos por Instagram
           </a>
 
-          <ul className="mt-10 space-y-3">
-            <li>
-              <span className="block text-base text-blanco/85">Mail</span>
-              <a href={`mailto:${EMAIL}`} className="break-all text-xl text-blanco decoration-celeste">
-                {EMAIL}
-              </a>
-            </li>
-            <li>
-              <span className="block text-base text-blanco/85">Instagram</span>
-              {INSTAGRAM_PENDIENTE ? (
-                <span className="text-xl">{INSTAGRAM_USER}</span>
-              ) : (
-                <a
-                  href={INSTAGRAM_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xl text-blanco decoration-celeste"
-                >
-                  @{INSTAGRAM_USER}
-                </a>
-              )}
-            </li>
-          </ul>
+          <p className="mt-8">
+            <span className="block text-base text-blanco/85">O por mail</span>
+            <a href={`mailto:${EMAIL}`} className="break-all text-xl text-blanco decoration-celeste">
+              {EMAIL}
+            </a>
+          </p>
         </div>
 
         <div className="min-w-0 lg:pt-10">

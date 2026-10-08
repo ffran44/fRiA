@@ -14,7 +14,13 @@ a medida que se tomaron decisiones. Última actualización: 30/09/2026.
 | `ui-ux-pro-max` | Áreas táctiles de 44×44 px, espacio reservado para evitar saltos de contenido (CLS), labels visibles. | Revisión de cada sección |
 | `web-design-guidelines` (Vercel) | Auditoría de la etapa 5: `scroll-padding` para el header fijo, `touch-action`, estados hover y de toque, `translate="no"` en la sigla. | Etapa 5 |
 | `performance`, `core-web-vitals`, `seo`, `best-practices`, `web-quality-audit` ([addyosmani/web-quality-skills](https://github.com/addyosmani/web-quality-skills), instaladas en el paso 2) | LCP en el HTML inicial (el título del hero), caída de Copito en CSS, Motion con `LazyMotion`, `Suspense` por sección, metadatos, OG, `robots` y `sitemap`. | Pasos 2 y 5 |
-| `humanizer` | Texto de "Qué necesitaban" del caso Action Sport, a partir de lo que contaron los socios. | Trabajos |
+| `humanizer` | Textos de "Qué necesitaban" y "Resultado" del caso Action Sport, a partir de lo que contaron los socios. | Trabajos |
+| `impeccable` (polish + detector) | Pasada de pulido del 08/10: sin etiquetas chicas arriba de los títulos (el rubro pasa a bajada, "Error 404" entra en la frase), testimonio sin borde lateral grueso, selección de texto, cursor y barra de scroll con colores de fRiA. El detector queda en 0 hallazgos. | Todo el sitio |
+| `emil-design-eng` | Curva de salida propia para todas las transiciones (`--default-transition-timing-function`), respuesta al apretar en todos los controles, transiciones de interfaz de menos de 300 ms. | Botones, acordeón, chips, menú |
+| `mobile-native` | Al mantener apretado un botón no se selecciona el texto ni se abre el menú del celular; `:active` en todo lo que se toca. Ya estaban bien: `touch-action`, campos de 18 px (no hacen zoom), `theme-color`. | Todo el sitio |
+| `redesign-existing-projects` (criterio) | Ritmo entre secciones: Servicios y Nosotros sobre superficie blanca alternando con el celeste claro; maqueta de Action Sport fija mientras se lee la lista en pantallas grandes; Instagram una sola vez en Contacto. | Trabajos, Servicios, Nosotros, Contacto |
+
+Skills nuevas descartadas porque imponen su propia paleta o tipografía (el brief pide adaptar todo a la identidad de fRiA): `high-end-visual-design`, `minimalist-ui`, `gpt-taste`, `industrial-brutalist-ui`, `design-taste-frontend`.
 | `react-view-transitions` (Vercel) | Transición entre la tarjeta del caso y `/trabajos/[slug]`. | Pendiente: cuando haya más de un caso |
 | `writing-guidelines` (Vercel) | Revisión de voz y tono. | No se usó todavía |
 

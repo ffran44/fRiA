@@ -34,7 +34,8 @@ export default function Servicios() {
   }, [abierto]);
 
   return (
-    <section id="servicios" aria-labelledby="servicios-title" className="mx-auto max-w-6xl px-4 py-20 sm:px-8 lg:py-28">
+    <section id="servicios" aria-labelledby="servicios-title" className="bg-blanco">
+      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-8 lg:py-28">
       <h2 id="servicios-title" className="section-title">
         Servicios
       </h2>
@@ -73,7 +74,7 @@ export default function Servicios() {
                     aria-expanded={open}
                     aria-controls={panelId}
                     onClick={() => setAbierto(open ? null : s.id)}
-                    className="flex min-h-20 w-full items-center justify-between gap-4 py-5 text-left text-2xl font-bold transition-colors duration-200 hover:text-celeste-profundo sm:text-3xl"
+                    className="flex min-h-20 w-full items-center justify-between gap-4 py-5 text-left text-2xl font-bold transition-colors duration-200 hover:text-celeste-profundo active:text-celeste-profundo sm:text-3xl"
                   >
                     {s.titulo}
                     <svg
@@ -105,6 +106,7 @@ export default function Servicios() {
             );
           })}
         </ul>
+      </div>
       </div>
     </section>
   );

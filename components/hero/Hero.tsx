@@ -6,7 +6,7 @@ export default function Hero() {
     <section
       id="inicio"
       aria-labelledby="hero-title"
-      className="mx-auto max-w-6xl overflow-x-clip px-4 pb-20 pt-8 sm:px-8 md:pt-14 lg:pb-28"
+      className="mx-auto max-w-6xl overflow-x-clip px-4 pb-16 pt-8 sm:px-8 md:pt-14 lg:pb-28"
     >
       <div className="grid grid-cols-[1fr_auto] items-end gap-x-4 lg:grid-cols-[auto_1fr] lg:gap-x-6">
         {/* El título se pinta en el HTML inicial, sin animación: es el LCP.

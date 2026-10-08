@@ -75,13 +75,13 @@ export default function CasoDestacado({ trabajo }: { trabajo: Trabajo }) {
       {/* Orden (y de tabulación) en celular: nombre, maqueta, detalle.
           En pantallas grandes, la grilla ubica texto | maquetas. */}
       <header className="lg:col-start-1 lg:row-start-1 lg:pt-4">
-        <p className="text-base font-semibold uppercase tracking-[0.14em]">{trabajo.rubro}</p>
-        <h3 id={`caso-${trabajo.slug}`} className="font-display mt-3 text-[2.5rem] sm:text-5xl">
+        <h3 id={`caso-${trabajo.slug}`} className="font-display text-[2.5rem] sm:text-5xl">
           {trabajo.cliente}
         </h3>
+        <p className="mt-3 text-xl italic sm:text-2xl">{trabajo.rubro}</p>
       </header>
 
-      <div ref={mockupRef} className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
+      <div ref={mockupRef} className="min-w-0 lg:sticky lg:top-28 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start">
         {/* En celular se ve una maqueta por vez; en pantallas grandes, las dos. */}
         <div
           role="group"
@@ -178,7 +178,7 @@ export default function CasoDestacado({ trabajo }: { trabajo: Trabajo }) {
                         onClick={() => irA(item.seccion)}
                         aria-current={on ? "true" : undefined}
                         className={`flex min-h-12 w-full items-center gap-3 rounded-xl px-4 py-2.5 text-left transition-colors duration-200 ${
-                          on ? "bg-blanco shadow-sm" : "hover:bg-blanco/60"
+                          on ? "bg-blanco shadow-sm" : "hover:bg-blanco/60 active:bg-blanco"
                         }`}
                       >
                         <span
@@ -205,9 +205,9 @@ export default function CasoDestacado({ trabajo }: { trabajo: Trabajo }) {
         </dl>
 
         {trabajo.testimonio && (
-          <figure className="mt-8 border-l-4 border-celeste pl-5">
-            <blockquote className="text-xl italic">“{trabajo.testimonio.texto}”</blockquote>
-            <figcaption className="mt-2 text-base">{trabajo.testimonio.autor}</figcaption>
+          <figure className="mt-10">
+            <blockquote className="text-2xl italic leading-snug">“{trabajo.testimonio.texto}”</blockquote>
+            <figcaption className="mt-3 text-base font-semibold">{trabajo.testimonio.autor}</figcaption>
           </figure>
         )}
 

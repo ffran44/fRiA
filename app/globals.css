@@ -22,6 +22,10 @@
   --font-body: var(--font-playfair), Georgia, serif;
 
   --breakpoint-xs: 22.5rem; /* 360 px, el mínimo del brief */
+
+  /* Curva de salida fuerte para todas las transiciones: arranca rápido y se asienta
+     suave (las del navegador son flojas y hacen que todo se sienta lento). */
+  --default-transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @layer base {
@@ -39,6 +43,29 @@
   textarea,
   label {
     touch-action: manipulation;
+  }
+
+  /* Mantener apretado un botón no selecciona su texto ni abre el menú del celular. */
+  button,
+  [role="button"] {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* Lo que dibuja el navegador también lleva la marca. */
+  ::selection {
+    background: var(--color-celeste);
+    color: var(--color-noche);
+  }
+
+  input,
+  textarea {
+    caret-color: var(--color-celeste);
+  }
+
+  html {
+    scrollbar-color: color-mix(in oklab, var(--color-noche) 35%, transparent) var(--color-hielo);
   }
 
   @media (prefers-reduced-motion: reduce) {

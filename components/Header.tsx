@@ -62,7 +62,7 @@ export default function Header() {
         <button
           ref={toggleRef}
           type="button"
-          className="-mr-2 grid size-12 place-items-center rounded-full md:hidden"
+          className="-mr-2 grid size-12 place-items-center rounded-full transition-[scale] duration-150 active:scale-90 md:hidden"
           aria-expanded={open}
           aria-controls="menu-movil"
           aria-label={open ? "Cerrar menú" : "Abrir menú"}

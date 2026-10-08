@@ -6,7 +6,7 @@ export default function Nosotros() {
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-8 lg:py-28">
       <h2 id="nosotros-title" className="text-[min(4.5rem,calc((100vw-2rem)/6.8))]">
         <Sigla />
-        <span className="mt-1 block">son nuestras iniciales.</span>
+        <span className="mt-5 block sm:mt-8">son nuestras iniciales.</span>
       </h2>
       <p className="mt-2">
         <span className="pointer-fine:hidden">Tocá las letras para ver de dónde salen.</span>

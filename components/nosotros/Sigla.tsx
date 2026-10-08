@@ -53,7 +53,9 @@ export default function Sigla() {
       onPointerLeave={(e) => e.pointerType === "mouse" && setHover(false)}
       className="relative block cursor-pointer rounded-lg text-left"
     >
-      <span className="block whitespace-nowrap">
+      {/* La sigla en grande, como el logo: "fRiA" mide 3.16em; el ancho útil dividido 3.9
+          (celular) o 3.6 (resto) deja lugar para que las letras se separen. */}
+      <span className="block whitespace-nowrap text-[calc((100vw-2rem)/3.9)] leading-[0.95] sm:text-[min(13rem,calc((min(100vw,72rem)-4rem)/3.6))]">
         {SIGLA.map((s, i) => (
           <m.span
             key={s.letra}
@@ -61,7 +63,7 @@ export default function Sigla() {
             className="inline-block"
             initial={false}
             animate={{ x: abierto && layout ? layout.dx[i] : 0 }}
-            transition={{ type: "spring", stiffness: 260, damping: 22 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
           >
             {s.letra}
           </m.span>
@@ -69,7 +71,7 @@ export default function Sigla() {
       </span>
       {/* Lugar reservado para los nombres: abrir no mueve nada del resto de la página. */}
       {/* Los nombres son un refuerzo visual: el párrafo de abajo ya los dice. */}
-      <span aria-hidden className="relative block h-[1.9rem] font-body text-lg font-semibold leading-none tracking-normal">
+      <span aria-hidden className="relative mt-2 block h-8 font-body text-lg font-semibold leading-none tracking-normal sm:h-10 sm:text-2xl">
         {SIGLA.map((s, i) => (
           <m.span
             key={s.nombre}

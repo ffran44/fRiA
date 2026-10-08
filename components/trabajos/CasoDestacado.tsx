@@ -68,14 +68,17 @@ export default function CasoDestacado({ trabajo }: { trabajo: Trabajo }) {
     `Captura del sitio de ${trabajo.cliente} en ${d === "celular" ? "celular" : "computadora"}`;
 
   return (
-    <article
-      aria-labelledby={`caso-${trabajo.slug}`}
-      className="grid gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:grid-rows-[auto_1fr]"
-    >
+    <article aria-labelledby={`caso-${trabajo.slug}`}>
+      {/* La maqueta queda fija solo dentro de esta grilla: no se monta sobre el resultado. */}
+      <div className="grid gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:grid-rows-[auto_1fr]">
       {/* Orden (y de tabulación) en celular: nombre, maqueta, detalle.
           En pantallas grandes, la grilla ubica texto | maquetas. */}
       <header className="lg:col-start-1 lg:row-start-1 lg:pt-4">
-        <h3 id={`caso-${trabajo.slug}`} className="font-display text-[2.5rem] sm:text-5xl">
+        {/* "Action" mide 4.7em: el ancho útil dividido 5 hace que entre en una línea. */}
+        <h3
+          id={`caso-${trabajo.slug}`}
+          className="font-display text-[min(4.5rem,calc((100vw-2rem)/5))] leading-[0.95]"
+        >
           {trabajo.cliente}
         </h3>
         <p className="mt-3 text-xl italic sm:text-2xl">{trabajo.rubro}</p>
@@ -134,7 +137,7 @@ export default function CasoDestacado({ trabajo }: { trabajo: Trabajo }) {
 
           {/* Celular: en pantallas grandes se apoya sobre el navegador */}
           <div
-            className={`mx-auto w-[min(17rem,78vw)] rounded-[2.6rem] bg-noche p-2.5 shadow-[0_24px_60px_-18px_rgb(14_42_61/0.5)] lg:absolute lg:bottom-0 lg:left-0 lg:w-52 ${
+            className={`mx-auto w-[min(17rem,78vw)] rounded-[2.6rem] bg-noche p-2.5 shadow-[0_24px_60px_-18px_rgb(14_42_61/0.5)] lg:absolute lg:bottom-0 lg:left-0 lg:w-60 ${
               device === "celular" ? "block" : "hidden"
             } lg:block`}
           >
@@ -145,7 +148,7 @@ export default function CasoDestacado({ trabajo }: { trabajo: Trabajo }) {
                 }}
                 captura={trabajo.capturas.celular}
                 alt={alt("celular")}
-                sizes="(min-width: 1024px) 208px, 272px"
+                sizes="(min-width: 1024px) 240px, 272px"
                 onScrollFraction={onScroll("celular")}
                 className="aspect-[9/19]"
               />
@@ -196,12 +199,6 @@ export default function CasoDestacado({ trabajo }: { trabajo: Trabajo }) {
             </dd>
           </div>
 
-          {trabajo.resultado && (
-            <div>
-              <dt className="text-xl font-bold">Resultado</dt>
-              <dd className="mt-2">{trabajo.resultado}</dd>
-            </div>
-          )}
         </dl>
 
         {trabajo.testimonio && (
@@ -225,6 +222,15 @@ export default function CasoDestacado({ trabajo }: { trabajo: Trabajo }) {
           <span className="sr-only">(se abre en otra pestaña)</span>
         </ButtonLink>
       </div>
+      </div>
+
+      {/* Cierre del caso: lo que dijeron los profes, en grande. Sin comillas porque es lo
+          que contaron, no una frase textual. */}
+      {trabajo.resultado && (
+        <p className="mt-16 max-w-[34ch] text-[clamp(1.6rem,1.1rem+2vw,2.6rem)] italic leading-[1.25] lg:mt-24">
+          {trabajo.resultado}
+        </p>
+      )}
     </article>
   );
 }

@@ -23,6 +23,10 @@
 
   --breakpoint-xs: 22.5rem; /* 360 px, el mínimo del brief */
 
+  /* Ancho máximo del contenido: aprovecha pantallas grandes (hasta 1440 px) sin que los
+     textos se estiren, porque los párrafos tienen su propio límite de 65 caracteres. */
+  --container-sitio: 90rem;
+
   /* Curva de salida fuerte para todas las transiciones: arranca rápido y se asienta
      suave (las del navegador son flojas y hacen que todo se sienta lento). */
   --default-transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);

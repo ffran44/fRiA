@@ -27,7 +27,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-noche/10 bg-hielo/90 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-8 md:h-20">
+      <div className="mx-auto flex h-16 max-w-sitio items-center justify-between px-4 sm:px-8 md:h-20">
         <Link href="/#inicio" className="-ml-1 rounded-md p-1" aria-label="fRiA, ir al inicio">
           <Image
             src="/brand/fria-logo-horizontal-claro.svg"
@@ -100,7 +100,7 @@ export default function Header() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.18 }}
           >
-            <ul className="mx-auto flex max-w-6xl flex-col px-4 pb-6 pt-2">
+            <ul className="mx-auto flex max-w-sitio flex-col px-4 pb-6 pt-2">
               {NAV_LINKS.map((l) => (
                 <li key={l.href}>
                   <Link

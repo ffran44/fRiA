@@ -29,7 +29,7 @@ export default function Contacto() {
 
   return (
     <section id="contacto" aria-labelledby="contacto-title" className="bg-noche text-blanco">
-      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-8 lg:py-28">
+      <div className="mx-auto max-w-sitio px-4 py-20 sm:px-8 lg:py-28">
         {/* El cierre a la escala del hero: el título a lo ancho y Copito parado al lado. */}
         <div className="grid items-end gap-x-4 gap-y-6 lg:grid-cols-[minmax(0,1fr)_12rem]">
           <Copito
@@ -44,7 +44,7 @@ export default function Contacto() {
               grandes se descuenta la columna de Copito. */}
           <h2
             id="contacto-title"
-            className="text-[calc((100vw-2rem)/9.9)] sm:text-[calc((100vw-4rem)/9.9)] lg:col-start-1 lg:row-start-1 lg:text-[min(6rem,calc((min(100vw,72rem)-17rem)/9.9))]"
+            className="text-[calc((100vw-2rem)/9.9)] sm:text-[calc((100vw-4rem)/9.9)] lg:col-start-1 lg:row-start-1 lg:text-[min(6rem,calc((min(100vw,90rem)-17rem)/9.9))]"
           >
             ¿Charlamos <span className="whitespace-nowrap">tu proyecto?</span>
           </h2>

@@ -271,7 +271,7 @@ export default function ComoTrabajamos() {
 
   return (
     <section id="como-trabajamos" aria-labelledby="proceso-title" className="overflow-x-clip">
-      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-8 lg:py-28">
+      <div className="mx-auto max-w-sitio px-4 py-20 sm:px-8 lg:py-28">
         <h2 id="proceso-title" className="section-title">
           Cómo trabajamos
         </h2>

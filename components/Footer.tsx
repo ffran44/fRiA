@@ -7,7 +7,7 @@ const INSTAGRAM_PENDIENTE = INSTAGRAM_USER.startsWith("[");
 export default function Footer() {
   return (
     <footer className="bg-noche text-blanco">
-      <div className="mx-auto max-w-6xl border-t border-blanco/20 px-4 py-12 sm:px-8">
+      <div className="mx-auto max-w-sitio border-t border-blanco/20 px-4 py-12 sm:px-8">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <Link href="/#inicio" className="w-fit rounded-md" aria-label="fRiA, volver al inicio">
             <Image

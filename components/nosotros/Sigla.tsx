@@ -55,7 +55,7 @@ export default function Sigla() {
     >
       {/* La sigla en grande, como el logo: "fRiA" mide 3.16em; el ancho útil dividido 3.9
           (celular) o 3.6 (resto) deja lugar para que las letras se separen. */}
-      <span className="block whitespace-nowrap text-[calc((100vw-2rem)/3.9)] leading-[0.95] sm:text-[min(13rem,calc((min(100vw,72rem)-4rem)/3.6))]">
+      <span className="block whitespace-nowrap text-[calc((100vw-2rem)/3.9)] leading-[0.95] sm:text-[min(13rem,calc((min(100vw,90rem)-4rem)/3.6))]">
         {SIGLA.map((s, i) => (
           <m.span
             key={s.letra}

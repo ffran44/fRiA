@@ -35,7 +35,7 @@ export default function Servicios() {
 
   return (
     <section id="servicios" aria-labelledby="servicios-title" className="bg-blanco">
-      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-8 lg:py-28">
+      <div className="mx-auto max-w-sitio px-4 py-20 sm:px-8 lg:py-28">
       <h2 id="servicios-title" className="section-title">
         Servicios
       </h2>
@@ -83,7 +83,7 @@ export default function Servicios() {
                   >
                     {/* "Automatiza-" (8.6em) es lo más ancho que no se corta: el ancho
                         útil dividido 8.9 hace que entre siempre, desde 360 px. */}
-                    <span className="font-display text-[calc((100vw-4.75rem)/8.9)] leading-[1.05] sm:text-[min(3.5rem,calc((100vw-6.75rem)/8.9))] lg:text-[min(3.5rem,calc((min(100vw,72rem)-18.25rem)/8.9))]">
+                    <span className="font-display text-[calc((100vw-4.75rem)/8.9)] leading-[1.05] sm:text-[min(3.5rem,calc((100vw-6.75rem)/8.9))] lg:text-[min(3.5rem,calc((min(100vw,90rem)-18.25rem)/8.9))]">
                       {s.titulo}
                     </span>
                     <svg

@@ -28,7 +28,7 @@ export default function NotFound() {
       <main id="contenido" className="overflow-x-clip">
         <section
           aria-labelledby="no-encontrada-title"
-          className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-24 pt-12 sm:px-8 md:grid-cols-[minmax(0,1fr)_auto] md:pt-20 lg:pb-32"
+          className="mx-auto grid max-w-sitio items-center gap-10 px-4 pb-24 pt-12 sm:px-8 md:grid-cols-[minmax(0,1fr)_auto] md:pt-20 lg:pb-32"
         >
           <div className="md:order-2">
             <div className="relative mx-auto w-fit">

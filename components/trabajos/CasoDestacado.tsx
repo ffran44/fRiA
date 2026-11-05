@@ -74,13 +74,14 @@ export default function CasoDestacado({ trabajo }: { trabajo: Trabajo }) {
       {/* Orden (y de tabulación) en celular: nombre, maqueta, detalle.
           En pantallas grandes, la grilla ubica texto | maquetas. */}
       <header className="lg:col-start-1 lg:row-start-1 lg:pt-4">
-        {/* "Action" mide 4.7em: el ancho útil dividido 5 hace que entre en una línea. */}
-        <h3
+        {/* La palabra más ancha de los clientes ("Training", ~6.6em) entra siempre: el ancho
+            útil dividido 7. */}
+        <h1
           id={`caso-${trabajo.slug}`}
-          className="font-display text-[min(4.5rem,calc((100vw-2rem)/5))] leading-[0.95]"
+          className="font-display text-[min(4.5rem,calc((100vw-2rem)/7))] leading-[0.95]"
         >
           {trabajo.cliente}
-        </h3>
+        </h1>
         <p className="mt-3 text-xl italic sm:text-2xl">{trabajo.rubro}</p>
       </header>
 

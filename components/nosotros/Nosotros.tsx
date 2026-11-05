@@ -3,7 +3,7 @@ import Sigla from "./Sigla";
 export default function Nosotros() {
   return (
     <section id="nosotros" aria-labelledby="nosotros-title" className="bg-blanco">
-      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-8 lg:py-28">
+      <div className="mx-auto max-w-sitio px-4 py-20 sm:px-8 lg:py-28">
       <h2 id="nosotros-title" className="text-[min(4.5rem,calc((100vw-2rem)/6.8))]">
         <Sigla />
         <span className="mt-5 block sm:mt-8">son nuestras iniciales.</span>

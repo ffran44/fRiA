@@ -17,6 +17,7 @@ Se completan en un solo lugar y se actualizan en todo el sitio:
 | Dato | Dónde |
 |---|---|
 | Action Sport: testimonio (frase textual del cliente) | `lib/trabajos.ts` (solo se muestra si hay una frase real) |
+| Athlos Training: qué necesitaba Manu antes de la página | `lib/trabajos.ts` → `necesitaban` (hoy se ve el corchete) |
 
 ## Contacto
 
@@ -39,7 +40,9 @@ npx vercel deploy --prod
 
 ## Nuevo caso en Trabajos
 
-1. Sacar capturas de página completa (celular 390 px a 1.5x, escritorio 1440 px) en WebP y
-   guardarlas en `public/trabajos/<slug>/`.
+1. Sacar capturas de página completa (celular 390 px a 1.5x, escritorio 1440 px) en WebP,
+   con una versión chica de cada una, y la primera pantalla de escritorio como portada
+   (1440×900 y 720). Guardar todo en `public/trabajos/<slug>/`.
 2. Sumar el caso en `lib/trabajos.ts` con la posición de cada sección de la captura.
-3. Con más de un caso, la sección pasa a grilla con una página por caso en `/trabajos/[slug]`.
+3. Aparece solo como tarjeta en la grilla de la home y con su página en `/trabajos/<slug>`
+   (también entra en el sitemap).
